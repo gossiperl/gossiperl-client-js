@@ -76,14 +76,28 @@ module.exports = testCase({
 
   "Serialize / deserialize arbitrary": function(test) {
     var digestType = "customDigest";
+    
     var digestData = [
       { name: 'property1', value: "Some string value", id: 0 },
       { name: 'property_bool', value: true, id: 1 },
       { name: 'and_an_i16', value: 123, id: 2, type_hint: 'i16' } ];
+    
+    var digestInfo = [
+      { name: 'property1', value: "", id: 0 },
+      { name: 'property_bool', value: false, id: 1 },
+      { name: 'and_an_i16', value: 0, id: 2, type_hint: 'i16' } ];
+    
     var serialized = serializer.serializeArbitrary( digestType, digestData );
-    console.log(serialized);
-    //var deserialized = serializer.deserialize( serialized );
-    test.equal( 1, 1 );
+    var deserialized = serializer.deserializeArbitrary( digestType, serialized, digestInfo );
+    
+    test.ok( true, deserialized.hasOwnProperty('property1') );
+    test.ok( true, deserialized.hasOwnProperty('property_bool') );
+    test.ok( true, deserialized.hasOwnProperty('and_an_i16') );
+
+    test.equal( digestData[0].value, deserialized['property1'] );
+    test.equal( digestData[1].value, deserialized['property_bool'] );
+    test.equal( digestData[2].value, deserialized['and_an_i16'] );
+
     test.done();
   },
 
