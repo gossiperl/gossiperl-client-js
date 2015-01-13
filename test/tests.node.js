@@ -74,6 +74,19 @@ module.exports = testCase({
     test.done();
   },
 
+  "Serialize / deserialize arbitrary": function(test) {
+    var digestType = "customDigest";
+    var digestData = [
+      { name: 'property1', value: "Some string value", id: 0 },
+      { name: 'property_bool', value: true, id: 1 },
+      { name: 'and_an_i16', value: 123, id: 2, type_hint: 'i16' } ];
+    var serialized = serializer.serializeArbitrary( digestType, digestData );
+    console.log(serialized);
+    //var deserialized = serializer.deserialize( serialized );
+    test.equal( 1, 1 );
+    test.done();
+  },
+
   "Serialize / deserialize with encryption": function(test) {
     var aes = new Gossiperl.Client.Encryption.Aes256( symmetricKey );
     var digest = Gossiperl.Client.getAnnotatedDigest("Digest", {
