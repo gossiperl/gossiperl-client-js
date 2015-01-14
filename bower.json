@@ -6,7 +6,7 @@
     "jquery": "~1.11.0",
     "underscore": "~1.7.0",
     "thrift": "radekg/thrift#rads-bleeding-edge",
-    "thrift-js-binary-protocol": "radekg/thrift-js-binary-protocol",
+    "thrift-js-binary-protocol": "gossiperl/thrift-js-binary-protocol",
     "qunit": "~1.14.0",
     "browserify-cryptojs": "~0.3.1"
   },
