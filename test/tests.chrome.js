@@ -45,10 +45,10 @@ module("Serialization tests");
         setTimeout(function() {
 
           supervisor.disconnect( config.overlayName );
-          equal(supervisor.getNumberOfConnections(),0);
 
           setTimeout(function() {
             
+            equal(supervisor.getNumberOfConnections(),0);
             QUnit.start();
 
           }, 1500);
