@@ -1,10 +1,10 @@
 var testCase  = require('nodeunit').testCase;
-require('../lib/gossiperl.client.node.js');
+var Gossiperl = require('../lib/gossiperl.client.node.js').Gossiperl;
 
 var serializer = new Gossiperl.Client.Serialization.Serializer();
-var clientName = "chrome-test-client";
+var clientName = "node-test-client";
 var clientPort = 54321;
-var clientSecret = "chrome-client-secret";
+var clientSecret = "node-client-secret";
 var symmetricKey = "v3JElaRswYgxOt4b";
 var overlayName = "gossiper_overlay_remote";
 var overlayPort = 6666;
@@ -15,45 +15,6 @@ module.exports = testCase({
   "Gossiperl context": function(test) {
     test.equal( Gossiperl.CurrentContext, Gossiperl.Context.NODEJS );
     test.done();
-  },
-
-  "Process": function(test) {
-    var supervisor = new Gossiperl.Client.Supervisor();
-    test.equal(supervisor.getNumberOfConnections(),0);
-    var config = {
-      overlayName:  overlayName,
-      overlayPort:  overlayPort,
-      clientName:   clientName,
-      clientPort:   clientPort,
-      clientSecret: clientSecret,
-      symmetricKey: symmetricKey
-    };
-    supervisor.connect(config);
-    test.equal(supervisor.getNumberOfConnections(),1);
-    
-    setTimeout(function() {
-      
-      var resp = supervisor.subscribe( config.overlayName, events );
-      test.deepEqual(resp, events);
-
-      setTimeout(function() {
-        
-        var resp = supervisor.unsubscribe( config.overlayName, events );
-        test.deepEqual(resp, []);
-
-        setTimeout(function() {
-
-          supervisor.disconnect( config.overlayName );
-
-          setTimeout(function() {
-            
-            test.equal(supervisor.getNumberOfConnections(),0);
-            test.done();
-
-          }, 1500);
-        }, 3000);
-      }, 3000);
-    }, 3000);
   },
 
   "Simple serialize / deserialize": function(test) {
@@ -121,6 +82,45 @@ module.exports = testCase({
     test.equal( deserialized.id, digest.id );
     test.equal( deserialized.secret, clientSecret );
     test.done();
+  },
+
+  "Process": function(test) {
+    var supervisor = new Gossiperl.Client.Supervisor();
+    test.equal(supervisor.getNumberOfConnections(),0);
+    var config = {
+      overlayName:  overlayName,
+      overlayPort:  overlayPort,
+      clientName:   clientName,
+      clientPort:   clientPort,
+      clientSecret: clientSecret,
+      symmetricKey: symmetricKey
+    };
+    supervisor.connect(config);
+    test.equal(supervisor.getNumberOfConnections(),1);
+    
+    setTimeout(function() {
+      
+      var resp = supervisor.subscribe( config.overlayName, events );
+      test.deepEqual(resp, events);
+
+      setTimeout(function() {
+        
+        var resp = supervisor.unsubscribe( config.overlayName, events );
+        test.deepEqual(resp, []);
+
+        setTimeout(function() {
+
+          supervisor.disconnect( config.overlayName );
+
+          setTimeout(function() {
+            
+            test.equal(supervisor.getNumberOfConnections(),0);
+            test.done();
+
+          }, 1500);
+        }, 3000);
+      }, 3000);
+    }, 3000);
   }
 
 });
