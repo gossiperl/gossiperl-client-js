@@ -12,6 +12,8 @@ before_install:
   - sudo dpkg -i gossiperl-1.0.0_all.deb
   - sudo /etc/gossiperl/start-and-wait.sh
   - sudo /etc/gossiperl/test-overlay.sh
+
+before_script:
   - npm install nodeunit
 
 script: nodeunit test/tests.node.js
